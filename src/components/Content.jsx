@@ -1,3 +1,6 @@
+import {useContext} from 'react';
+import {BookmarkContext} from '../helpers';
+
 const Card = (params) => {
     const {$id, title, url, context, category, tag} = params;
   
@@ -6,7 +9,7 @@ const Card = (params) => {
     }
   
     return (
-      <div className="column is-one-third" onClick={() => navigate(url)}>
+      <div className="column is-one-third is-clickable" onClick={() => navigate(url)}>
           <div className="card" key={$id}>
             <div className="card-content">
               <div className="content">
@@ -24,10 +27,37 @@ const Card = (params) => {
   }
 
 const Content = ({data}) => {
+  const context = useContext(BookmarkContext);
+
+  const {documents} = data;
+  const {subject, category, tag} = context;
+
+  let finalData  = documents;
+
+  if(subject !== ''){
+    finalData = documents.filter((document) => document.subject === subject)
+  }
+  if(category !== ''){
+    finalData = finalData.filter((document) => document.category === category)
+  }
+  if(tag !== ''){
+    finalData = finalData.filter((document) => document.tag === tag)
+  }
+
     return (
+      <>
+        <section className="section">Current Filters - 
+          Subject: {subject || 'All'}, 
+          Category: {category || 'All'}, 
+          Tag: {tag || 'All'}
+        </section>
+
         <div className="columns is-multiline p-6 ">
-            {data.documents.map((datum) => <Card key={datum.$id} {...datum} />)}
+            {finalData.map((datum) => {
+              return <Card key={datum.$id} {...datum} />
+            })}
         </div>
+      </>
     )
 }
 

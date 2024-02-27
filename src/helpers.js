@@ -1,9 +1,13 @@
-export const getContexts = (response) => {
+import {createContext } from "react";
+
+export const BookmarkContext = createContext();
+
+export const getSubjects = (response) => {
     const {documents} = response;
     return documents.reduce((acc, cur) => {
-        const {context} = cur;
-        if(!acc.includes(context)){
-            return [...acc, context]
+        const {subject} = cur;
+        if(!acc.includes(subject)){
+            return [...acc, subject]
         }else{
             return acc;
         }

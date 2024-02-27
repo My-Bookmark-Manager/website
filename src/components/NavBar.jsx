@@ -1,16 +1,18 @@
 import { useState } from "react"
 
-const ListItems = ({data}) => {
+const ListItems = ({data, clickHandler}) => {
+
     return (
         <div className="navbar-dropdown">
+            <a className="navbar-item" onClick={() => clickHandler('')} >All</a>
             {data.map((datum) => {
-                return (<a key={datum} className="navbar-item">{datum}</a>)
+                return (<a key={datum} className="navbar-item" onClick={() => clickHandler(datum)} >{datum}</a>)
             })}
         </div>
     )
 }
 
-const NavBar = ({contexts, categories, tags}) => {
+const NavBar = ({subjects, categories, tags, callback}) => {
 
     const [menuActive, setMenuActive] = useState('');
 
@@ -32,11 +34,11 @@ const NavBar = ({contexts, categories, tags}) => {
             </div>
 
             <div id="navbarMenu" className={`navbar-menu ${menuActive}`}>
-                {/* Contexts */}
+                {/* subjects */}
                 <div className="navbar-start">
                     <div className="navbar-item has-dropdown is-hoverable">
-                        <a className="navbar-link">Context</a>
-                        <ListItems data={contexts} />
+                        <a className="navbar-link">subjects</a>
+                        <ListItems data={subjects} clickHandler={(value) => callback('subject', value)}/>
                     </div>
                 </div>
 
@@ -44,7 +46,7 @@ const NavBar = ({contexts, categories, tags}) => {
                 <div className="navbar-start">
                     <div className="navbar-item has-dropdown is-hoverable">
                         <a className="navbar-link">Categories</a>
-                        <ListItems data={categories} />
+                        <ListItems data={categories} clickHandler={(value) => callback('category', value)}/>
                     </div>
                 </div>
 
@@ -52,7 +54,7 @@ const NavBar = ({contexts, categories, tags}) => {
                 <div className="navbar-start">
                     <div className="navbar-item has-dropdown is-hoverable">
                         <a className="navbar-link">Tags</a>
-                        <ListItems data={tags} />
+                        <ListItems data={tags} clickHandler={(value) => callback('tag', value)}/>
                     </div>
                 </div>
             </div>

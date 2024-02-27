@@ -1,7 +1,7 @@
 import './App.css';
 import {Client, Databases} from 'appwrite';
 import { useEffect, useState } from 'react';
-import {getContexts, getTags, getCategories} from './helpers';
+import {getSubjects, getTags, getCategories, BookmarkContext} from './helpers';
 import {Content, NavBar} from './components';
 
 const BAAS_ENDPOINT = '';
@@ -18,17 +18,19 @@ const db = new Databases(client);
 
 function App() {
   const [data, setData] = useState(null);
-  const [contexts, setContexts] = useState(null);
+  const [subjects, setSubjects] = useState(null);
   const [categories, setCategories] = useState(null);
   const [tags, setTags] = useState(null);
+
+  const [filter, setFilter] = useState({subject: '', category:'', tag: ''})
 
   useEffect(() => {
     async function getBookmarks(){
       const response = await db.listDocuments(DATABASE_ID, COLLECTOIN_ID);
       setData(response);
 
-      const contexts = getContexts(response);
-      setContexts(contexts);
+      const subjects = getSubjects(response);
+      setSubjects(subjects);
 
       const categories = getCategories(response);
       setCategories(categories);
@@ -41,14 +43,26 @@ function App() {
     
   }, [])
 
+  const onFilterChange = (key, value) => {
+    setFilter((s) => {
+      return {
+        ...s,
+        [key]: value
+      }
+    })
+  }
+
   if(!data){
     return null;
   }
 
   return (
     <>
-      <NavBar contexts={contexts} categories={categories} tags={tags} />
-      <Content data={data} />
+      <NavBar subjects={subjects} categories={categories} tags={tags} callback={onFilterChange} />
+      <BookmarkContext.Provider value={filter}>
+        <Content data={data} />
+      </BookmarkContext.Provider>
+      
     </>
     
   )
