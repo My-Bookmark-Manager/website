@@ -1,6 +1,8 @@
 import './App.css';
 import {Client, Databases} from 'appwrite';
 import { useEffect, useState } from 'react';
+import {getContexts, getTags, getCategories} from './helpers';
+import {Content, NavBar} from './components';
 
 const BAAS_ENDPOINT = '';
 const PROJECT_ID = '';
@@ -14,37 +16,25 @@ const client = new Client();
 
 const db = new Databases(client);
 
-function Card(params){
-  const {$id, title, url, context, category, tag} = params;
-
-  const navigate = (url) => {
-    window.open(url, "_blank");
-  }
-
-  return (
-    <div className="column is-one-third" onClick={() => navigate(url)}>
-        <div className="card" key={$id}>
-          <div className="card-content">
-            <div className="content">
-              {title}
-            </div>
-          </div>
-          <footer className="card-footer">
-            <a href="#" className="card-footer-item">{context}</a>
-            <a href="#" className="card-footer-item">{category}</a>
-            <a href="#" className="card-footer-item">{tag}</a>
-          </footer>
-        </div>
-    </div>
-  )
-}
-
 function App() {
   const [data, setData] = useState(null);
+  const [contexts, setContexts] = useState(null);
+  const [categories, setCategories] = useState(null);
+  const [tags, setTags] = useState(null);
+
   useEffect(() => {
     async function getBookmarks(){
       const response = await db.listDocuments(DATABASE_ID, COLLECTOIN_ID);
       setData(response);
+
+      const contexts = getContexts(response);
+      setContexts(contexts);
+
+      const categories = getCategories(response);
+      setCategories(categories);
+
+      const tags = getTags(response);
+      setTags(tags);
     }
 
     getBookmarks();
@@ -56,9 +46,11 @@ function App() {
   }
 
   return (
-    <div className="columns">
-      {data.documents.map((datum) => <Card key={datum.$id} {...datum} />)}
-    </div>
+    <>
+      <NavBar contexts={contexts} categories={categories} tags={tags} />
+      <Content data={data} />
+    </>
+    
   )
 }
 
