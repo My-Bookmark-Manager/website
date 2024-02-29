@@ -1,22 +1,8 @@
 import './App.css';
-import {Client, Databases} from 'appwrite';
 import { useEffect, useState } from 'react';
 import {getSubjects, getTags, getCategories, BookmarkContext} from './helpers';
 import {Content, NavBar} from './components';
-
-const {VITE_BAAS_ENDPOINT, VITE_PROJECT_ID, VITE_DATABASE_ID, VITE_COLLECTOIN_ID} = import.meta.env;
-
-const BAAS_ENDPOINT = VITE_BAAS_ENDPOINT;
-const PROJECT_ID = VITE_PROJECT_ID;
-const DATABASE_ID = VITE_DATABASE_ID;
-const COLLECTOIN_ID = VITE_COLLECTOIN_ID;
-
-const client = new Client();
-  client
-    .setEndpoint(BAAS_ENDPOINT)
-    .setProject(PROJECT_ID);
-
-const db = new Databases(client);
+import {DATABASE_ID, COLLECTOIN_ID, db} from './baas-setup';
 
 function App() {
   const [data, setData] = useState(null);
@@ -24,7 +10,7 @@ function App() {
   const [categories, setCategories] = useState(null);
   const [tags, setTags] = useState(null);
 
-  const [filter, setFilter] = useState({subject: '', category:'', tag: ''})
+  const [filter, setFilter] = useState({completed: '', subject: '', category:'', tag: ''})
 
   useEffect(() => {
     async function getBookmarks(){
