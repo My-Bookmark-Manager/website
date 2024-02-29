@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import {getSubjects, getTags, getCategories, BookmarkContext} from './helpers';
 import {Content, NavBar} from './components';
 
-const BAAS_ENDPOINT = '';
-const PROJECT_ID = '';
-const DATABASE_ID = '';
-const COLLECTOIN_ID = '';
+const BAAS_ENDPOINT = process.env.BAAS_ENDPOINT;
+const PROJECT_ID = process.env.PROJECT_ID;
+const DATABASE_ID = process.env.DATABASE_ID;
+const COLLECTOIN_ID = process.env.COLLECTOIN_ID;
 
 const client = new Client();
   client
