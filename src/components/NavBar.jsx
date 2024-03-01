@@ -4,9 +4,9 @@ const ListItems = ({data, clickHandler}) => {
 
     return (
         <div className="navbar-dropdown is-right">
-            <a className="navbar-item" onClick={() => clickHandler('')} >All</a>
+            {/* <a className="navbar-item" onClick={() => clickHandler('')} >All</a> */}
             {data.map((datum) => {
-                return (<a key={datum} className="navbar-item" onClick={() => clickHandler(datum)} >{datum}</a>)
+                return (<a key={datum} className="navbar-item" onClick={() => clickHandler(datum)} >{datum || 'All'}</a>)
             })}
         </div>
     )

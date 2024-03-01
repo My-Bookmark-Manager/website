@@ -11,7 +11,7 @@ export const getSubjects = (response) => {
         }else{
             return acc;
         }
-    }, [])
+    }, ['']);
 };
 export const getTags = (response) => {
     const {documents} = response;
@@ -22,7 +22,7 @@ export const getTags = (response) => {
         }else{
             return acc;
         }
-    }, [])
+    }, ['']);
 };
 export const getCategories = (response) => {
     const {documents} = response;
@@ -33,7 +33,7 @@ export const getCategories = (response) => {
         }else{
             return acc;
         }
-    }, [])
+    }, ['']);
 };
 
     
