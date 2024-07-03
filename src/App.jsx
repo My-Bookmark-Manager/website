@@ -2,7 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import {getSubjects, getTags, getCategories, BookmarkContext} from './helpers';
 import {Content, NavBar} from './components';
-import {DATABASE_ID, COLLECTOIN_ID, db} from './baas-setup';
+import {DATABASE_ID, COLLECTOIN_ID, db, DOCS_LIMIT_QUERY} from './baas-setup';
 
 function App() {
   const [data, setData] = useState(null);
@@ -14,7 +14,11 @@ function App() {
 
   useEffect(() => {
     async function getBookmarks(){
-      const response = await db.listDocuments(DATABASE_ID, COLLECTOIN_ID);
+      const response = await db.listDocuments(
+        DATABASE_ID, 
+        COLLECTOIN_ID,
+        [DOCS_LIMIT_QUERY]
+      );
       setData(response);
 
       const subjects = getSubjects(response);
